@@ -3,7 +3,7 @@ library(ggplot2)
 library(dplyr)
 library(caret)
 
-# impport data
+# import data
 data <- read.csv('vgsales.csv')
 
 # Filter
@@ -13,14 +13,13 @@ data_filtered <- data %>%
 
 # Select data
 data_filtered <- data_filtered %>%
-  select(Platform, Genre, Publisher, NA_Sales, EU_Sales, JP_Sales, Other_Sales, Global_Sales) %>%
+  select(Platform, Genre, Publisher, NA_Sales, 
+         EU_Sales, JP_Sales, Other_Sales, Global_Sales) %>%
   na.omit()
 
 # Split for training and testing (only training)
-set.seed(123)
 trainIndex <- createDataPartition(data_filtered$JP_Sales, p = 1, list = FALSE)
 trainData <- data_filtered[trainIndex, ]
-testData <- data_filtered[-trainIndex, ]
 
 # Train linear regression models
 model_NA <- train(NA_Sales ~ Platform + Genre + Publisher, data = trainData, method = "lm")
