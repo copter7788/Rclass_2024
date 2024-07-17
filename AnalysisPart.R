@@ -1,17 +1,15 @@
-### Analysis Part
-
-# Load necessary libraries
+# All use lib
 library(ggplot2)
 library(dplyr)
 library(tidyr)
 
-# Define a consistent color palette
+# Color palette
 region_colors <- c("EU_Sales" = "#66C2A5", "JP_Sales" = "#FC8D62", "NA_Sales" = "#8DA0CB", "Other_Sales" = "#E78AC3")
 
 # Read the data
 data <- read.csv('vgsales.csv')
 
-# Filter the data for the years 2010 to 2016 and filter NA
+# Filter
 data_filtered <- data %>%
   filter(!is.na(Year)) %>%
   filter(Year >= 2010 & Year <= 2016)
@@ -144,7 +142,3 @@ ggplot(genre_sales_jp, aes(x = Genre, y = Sales, fill = Region)) +
   theme(axis.text.x = element_text(angle = 90, hjust = 1), plot.title = element_text(hjust = 0.5), legend.position = "none") +
   scale_fill_manual(values = c("#66C2A5")) +
   coord_flip()
-
-
-### ML part
-

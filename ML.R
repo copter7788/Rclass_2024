@@ -1,35 +1,35 @@
-# Load necessary libraries
+# all use lib
 library(ggplot2)
 library(dplyr)
 library(caret)
 
-# Read the data
+# impport data
 data <- read.csv('vgsales.csv')
 
-# Filter the data for the years 2010 to 2016
+# Filter
 data_filtered <- data %>%
   filter(!is.na(Year)) %>%
   filter(Year >= 2010 & Year <= 2016)
 
-# Select relevant columns and remove rows with missing values
+# Select data
 data_filtered <- data_filtered %>%
   select(Platform, Genre, Publisher, NA_Sales, EU_Sales, JP_Sales, Other_Sales, Global_Sales) %>%
   na.omit()
 
-# Split the data into training and testing sets
+# Split for training and testing (only training)
 set.seed(123)
 trainIndex <- createDataPartition(data_filtered$JP_Sales, p = 1, list = FALSE)
 trainData <- data_filtered[trainIndex, ]
 testData <- data_filtered[-trainIndex, ]
 
-# Train linear regression models for each sales column
+# Train linear regression models
 model_NA <- train(NA_Sales ~ Platform + Genre + Publisher, data = trainData, method = "lm")
 model_EU <- train(EU_Sales ~ Platform + Genre + Publisher, data = trainData, method = "lm")
 model_JP <- train(JP_Sales ~ Platform + Genre + Publisher, data = trainData, method = "lm")
 model_Other <- train(Other_Sales ~ Platform + Genre + Publisher, data = trainData, method = "lm")
 model_Global <- train(Global_Sales ~ Platform + Genre + Publisher, data = trainData, method = "lm")
 
-# Function to predict sales
+# Function
 predict_sales <- function(input_data) {
   predicted_NA <- predict(model_NA, newdata = input_data)
   predicted_EU <- predict(model_EU, newdata = input_data)
